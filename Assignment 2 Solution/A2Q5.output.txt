@@ -1,0 +1,10 @@
+0.0
+0.14285714285714285
+-2.0
+24.0
+0.6666666666666666
+3.1415926534674368
+16.5
+Invalid Expression
+Invalid Expression
+Invalid Expression

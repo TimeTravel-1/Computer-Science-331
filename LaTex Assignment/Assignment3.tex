@@ -1,0 +1,187 @@
+\documentclass[11pt]{article}
+
+%%%%%%%%%%%%%% LATEX SAMPLE FILE %%%%%%%%%%%%%%%%
+% A line which starts with a % sign
+% is called a COMMENT. It is IGNORED
+% by the LaTeX processor.
+
+% Include math
+\usepackage{amsmath,amsthm,amssymb}
+% Include links
+\usepackage{hyperref}
+\usepackage{amsmath}
+\usepackage[noend]{algpseudocode}
+
+\makeatletter
+\def\THEN{\@marginspace\untab\keyword{then}\ \tab}
+\def\ELSE{\@marginspace\untab\keyword{else}\ \tab}%
+\def\FI{\@marginspace\untab}
+\makeatother
+
+
+%%%%%%%%%%%%%  THEOREMS  %%%%%%%%%%%%%%%%%
+% Let's define some theorem environments
+% To use later in the paper
+\theoremstyle{plain} % other options: definition, remark
+\newtheorem*{theorem}{Theorem}
+\newtheorem*{lemma}{Lemma}
+% By including [theorem], the lemma follows the numbering of theorem
+% e.g. Thm 1, Lemma 2, Thm 3, Thm 4, \dots
+\theoremstyle{definition}
+\newtheorem*{definition}{Definition} % the star prevents numbering
+
+\theoremstyle{example}
+\newtheorem*{example}{Example}
+% Remarks
+\theoremstyle{remark}
+\newtheorem*{remark}{Remark}
+
+
+
+
+%%%%%%%%%%%%%%  PAGE SETUP %%%%%%%%%%%%%%%%%
+% LaTeX has big default margins
+% The following sets them to 1in
+\usepackage[margin=1.5in]{geometry}
+
+% The following sets up some headers
+\usepackage{fancyhdr}
+\pagestyle{fancy}
+\lhead{CPSC 331 Introduction to Algorithms} % Left Header
+\rhead{\thepage} % Right Header
+\cfoot{} % Center Foot (empty)
+
+
+
+
+
+
+%%%%%%%%%%%%% SHORTCUTS %%%%%%%%%%%%%%%%%%%%
+% You can define your own shortcuts too.
+% Examples of custom commands
+\newcommand{\half}{\frac{1}{2}}
+\newcommand{\cbrt}[1]{\sqrt[3]{#1}}
+
+\begin{document}
+
+% Set up a title
+\title{CPSC 331}
+\author{David Ng}
+\date{Winter 2016}
+\maketitle
+
+% This line starts a new page
+\eject
+
+%%%%%%%%%%%%% January 11 %%%%%%%%%%%%%%%%%%%%
+\textbf{Question 1:}
+The loop invariant for the iterative search algorithm for a binary search tree is presented below. The following properties are satisfied at the beginning of each execution of the loop body:
+
+\begin{itemize}
+\item $curr \neq null$
+\item $v = null$
+\item $T$ and $key$ have not been changed
+\end{itemize}
+
+We will prove that the algorithm is partially correct by induction on the loop invariant.
+\\
+
+\textbf{Base Case}
+\begin{itemize}
+\item Before the first execution of the loop body, we have assigned $v=null$, so $v=null$ is satisfied before any iteration of the loop body
+\item We have assigned $curr = T.root$, and when loop test passes, this implies that $curr \neq null$.
+\item $T$ and $key$ have not been changed
+\end{itemize}
+
+\textbf{Inductive Hypothesis}
+
+
+Assume that the loop body is executed $k\geq 0$ times, and the loop invariant is satisfied at the beginning of the $k$th execution. So, at the end of the $k$th execution: 
+\begin{itemize}
+\item $T$ and $key$ have not been changed
+\item $v$ has been unchanged, or is now $v=curr.value$
+\item $curr$ has been unchanged, or it is now $curr.left$ or $curr.right$.
+\end{itemize}
+*Note that only one of $v$ or $curr$ could have changed, since the algorithm specifies cases. Now, if there is a $k+1$st iteration, then the loop test must have passed after the end of the $k$th execution (meaning that $curr \neq null$ and $v = null$), implying that immediately before the $k+1$st iteration, 
+
+\begin{itemize}
+\item $curr \neq null$
+\item $v = null$
+\item $T$ and $key$ have not been changed
+\end{itemize}
+
+Thus, the loop invariant holds. We note then, that the search algorithm is partially correct, since the preconditions imply that the loop invariant will be satisfied. We now apply the loop invariant to prove that the algorithm's postconditions hold at the end of the loop.
+
+The fact that $T$ and $key$ have not changed follows directly from the loop invariant. From the termination condition, we have either $curr = null$ or $v \neq null$ (not both). 
+
+\begin{itemize}
+\item Case 1: $curr = null$. It then follows that $v=null$, so a KeyNotFoundException is thrown since $key$ is not in $T$.
+\item Case 2: $v \neq null$. This means that $v$ is returned by the if statement, since $key$ is a key in $T$, so the associated value, $v$ is returned.
+\end{itemize}
+
+We also realize that this algorithm eventually terminates. This is because for any binary search tree of finite size, a specified key will either be in the tree, or not be in the tree. 
+
+First, we consider the case that the key is in the tree. After each iteration of the while loop, the depth of our search has increased by 1. Since the key exists at a certain depth and our comparisons with the other keys lead us to take the path (left or right) towards that key, it will eventually be the case that $key = curr.key$ and since $v \neq null$, the loop terminates. 
+
+Now, we consider the case that the key is not in the tree. Since this tree is of a finite size, we will at most have to search through the entire height of the tree making appropriate comparisons. Because the key is not in the tree, we will eventually reach a leaf of the tree, and continue to search its nonexistent children for the key. At this point, $curr = null$, so the loop terminates as well.
+
+Alternatively, we may consider a loop variant if we define it based on the height of the node at which $key$ is located (or where it would be if it was in to be inserted into the tree). If we denote the height of the key as $h$, then we can define the function $f(h,d) = h-d$ where $d$ denotes the current depth of the current node. We note that this is an integer valued function (since $h$ and $d$ are both integers). Furthermore, $f(h,d) = h-d$ decreases after every iteration of the loop because $d$ increases which $h$ remains constant. Lastly, $f(h,d) \leq 0$ when $d \geq h$, and the while loop terminates when $d = h$.
+\\
+
+
+\textbf{Question 2:}
+Pseudocode for an iterative algorithm for insertion into a binary search tree is given below. To insert a new value $v$ into the binary search tree $T$, we add a node $w$ where $w.key = v$, $w.left = null$, and $w.right = null$. 
+
+
+\begin{algorithmic}
+\\
+\\
+Insertion($T$,$z$)
+\State $y = null$
+\State $x = T.root$
+\While{$x \neq null$}  
+	\State$y = x$
+     	 \If{$z.key == x.key$}
+	 	\State throw KeyFoundException
+	 \ElsIf {$z.key < x.key$}
+          	\State $x = x.left$
+       	\Else
+          \State $x = x.right$
+       \EndIf
+\EndWhile
+$z.parent = y$
+\If {$y == null$}
+	\State $T.root = z$
+\ElsIf {$z.key < y.key$}
+	\State $y.left = z$
+\Else
+	\State $y.right = z$
+\EndIf
+\\
+\end{algorithmic}
+
+ 
+
+\textbf{Question 3:} Pseudocode for an iterative algorithm for an inorder traversal of a binary search tree.
+
+\begin{algorithmic}
+\\
+\\
+InorderTraversal($T$)
+\State $s = newStack()$
+\State $x = T.root$
+\While{$!s.isEmpty()$ \textbf{or} $x \neq null$}  
+     	 \If{$x \neq null$}
+          	\State $s.push(x)$
+		\State $x = x.left$
+       	\Else
+         	 \State $x = s.pop()$
+	 	\State $visit(x)$ \quad \quad \quad //print out next value
+		\State $x = x.right$
+       \EndIf
+\EndWhile
+\end{algorithmic}
+
+
+\end{document}
+

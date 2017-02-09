@@ -1,0 +1,33 @@
+Invalid Expression
+Invalid Expression
+Invalid Expression
+Invalid Expression
+Invalid Expression
+0.0
+1.0
+Invalid Expression
+Invalid Expression
+2.0
+3.0
+-5.0
+0.14285714285714285
+3.0
+-2.0
+15.0
+2.0
+6.0
+-2.0
+96.0
+0.13333333333333333
+16.5
+3.1415926534674368
+1.4146341463414633
+Invalid Expression
+Invalid Expression
+Invalid Expression
+Invalid Expression
+Invalid Expression
+Invalid Expression
+Invalid Expression
+Invalid Expression
+Invalid Expression
